@@ -1,6 +1,5 @@
-// assertion for primitives
+// assertion for primitives, helper for eqArrays
 const assertEqual = (actual, expected) => {
-  // console.log("assert equal: " + actual, expected);
   if (actual === expected) {
     return true;
   } else {
@@ -9,11 +8,8 @@ const assertEqual = (actual, expected) => {
 };
 // assertion helper for full arrays (assertArraysEqual) below
 const eqArrays = (arr1, arr2) => {
-  // console.log(arr1, arr2);
   let equality = true;
   for (let i = 0; i < arr1.length; i++) {
-    // console.log(typeof arr1[i], typeof arr2[i]);
-    // console.log(arr1[i], arr2[i]);
     if (assertEqual(arr1[i], arr2[i])) {
       continue;
     } else {
@@ -40,12 +36,10 @@ const letterPositions = function(sentence) {
   for (let i = 0; i < sentence.length; i++) {
     let char = sentence[i];
     if (char !== " ") {
-      // results[char] ? results[char].push(sentence.indexOf(char, results[char].indexOf(char) + 1)) : results[char] = [sentence.indexOf(char)];
       results[char] ? results[char].push(i) : results[char] = [sentence.indexOf(char)];
     }
   }
 
-  // console.log(results);
   return results;
 };
 
