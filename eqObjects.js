@@ -38,22 +38,34 @@ const assertArraysEqual = (arr1, arr2) => {
 // assertion for objects
 const eqObjects = function(object1, object2) {
   let object1Keys = Object.keys(object1);
-  let equality = false;
   if (Object.keys(object1).length !== Object.keys(object2).length) { // key not equal lengths, false
-    console.log("🔴 1eqObjects: ", object1, " !== ", object2);
+    console.log("🔴 eqObjects: ", object1, " !== ", object2);
     return false;
-  } else {
-    for (let key of object1Keys) {
-      if (!eqArrays(object1[key], object2[key])) {
-        console.log("🔴 2eqObjects: ", object1, " !== ", object2);
-        equality = false;
-        return false;
-      } else if (eqArrays(object1[key], object2[key])) {
-        equality = true;
+  } else { // keys equal lengths
+    let equality = false; // setup equality gates
+    for (let key of object1Keys) { // iterate through keys of obj1
+      if (Array.isArray(object1[key]) && Array.isArray(object2[key])) { // both values are arrays
+        if (object1[key].length !== object2[key].length) { // arrays are diff lengths, false
+          console.log("🔴 eqObjects: ", object1, " !== ", object2);
+          return false;
+        } else if (!eqArrays(object1[key], object2[key])) { // arrays are same length, but not same values, false
+          console.log("🔴 eqObjects: ", object1, " !== ", object2);
+          return false;
+        } else if (eqArrays(object1[key], object2[key])) { // arrays are same length and same values, equality is true
+          equality = true;
+        }
+      } else { // both values are not arrays, therefore primitives
+        if (!assertEqual(object1[key], object2[key])) { // are the two values the same?
+          console.log("🔴 eqObjects: ", object1, " !== ", object2);
+          return false;
+        } else {
+          equality = true;
+        }
       }
     }
+    // equality gate is still open? return true
     if (equality) {
-      console.log("🟢 2eqObjects: ", object1, " === ", object2);;
+      console.log("🟢 eqObjects: ", object1, " === ", object2);
       return true;
     }
   }
@@ -68,7 +80,7 @@ const ba = { b: "2", a: "1" };
 const abc = { a: "1", b: "2", c: "3" };
 assertEqual(eqObjects(ab, ba), true); // => true
 assertEqual(eqObjects(ab, abc), false); // => false
-console.log("---");
+
 const cd = { c: "1", d: ["2", 3] };
 const dc = { d: ["2", 3], c: "1" };
 const cd2 = { c: "1", d: ["2", 3, 4] };
